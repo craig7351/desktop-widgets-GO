@@ -296,9 +296,37 @@ function stopFlash() {
 // ===== 右鍵選單 =====
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
-    contextMenu.style.left = `${e.clientX}px`;
-    contextMenu.style.top = `${e.clientY}px`;
+
+    // 先顯示選單以取得尺寸
+    contextMenu.style.left = '0px';
+    contextMenu.style.top = '0px';
     contextMenu.classList.add('show');
+
+    const menuWidth = contextMenu.offsetWidth;
+    const menuHeight = contextMenu.offsetHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // 計算最佳位置
+    let left = e.clientX;
+    let top = e.clientY;
+
+    // 如果選單會超出右邊界，往左顯示
+    if (left + menuWidth > windowWidth) {
+        left = e.clientX - menuWidth;
+    }
+
+    // 如果選單會超出下邊界，往上顯示
+    if (top + menuHeight > windowHeight) {
+        top = e.clientY - menuHeight;
+    }
+
+    // 確保不會超出左邊界或上邊界
+    left = Math.max(0, left);
+    top = Math.max(0, top);
+
+    contextMenu.style.left = `${left}px`;
+    contextMenu.style.top = `${top}px`;
 });
 
 document.addEventListener('click', () => {

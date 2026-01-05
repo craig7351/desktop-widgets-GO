@@ -1,5 +1,6 @@
 // Wails 綁定
 import { FetchWeather, GetSystemStats, GetTodos, AddTodo, RemoveTodo, ToggleTodo, SetCity, GetCity, Quit, SetAlwaysOnTop } from '../wailsjs/go/main/App';
+import { BrowserOpenURL } from '../wailsjs/runtime/runtime';
 
 // ===== DOM 元素 =====
 const dayLabel = document.getElementById('day-label');
@@ -338,6 +339,7 @@ document.querySelectorAll('.menu-item[data-city]').forEach(item => {
     item.addEventListener('click', async () => {
         const city = item.dataset.city;
         await SetCity(city);
+        currentCity = city; // 更新 currentCity 供天氣圖示點擊使用
         locationLabel.textContent = cityNames[city] || city.toUpperCase();
         updateWeather();
     });
@@ -382,6 +384,17 @@ menuNormal.addEventListener('click', () => {
 // ===== 重新整理按鈕 =====
 refreshBtn.addEventListener('click', () => {
     updateWeather();
+});
+
+// ===== 天氣圖示點擊開啟網頁 =====
+let currentCity = 'Taoyuan';
+GetCity().then(city => { currentCity = city; });
+
+weatherIcon.style.cursor = 'pointer';
+weatherIcon.title = '點擊查看更多天氣資訊';
+weatherIcon.addEventListener('click', () => {
+    const url = `https://wttr.in/${currentCity}?lang=zh-tw`;
+    BrowserOpenURL(url);
 });
 
 // ===== 啟動 =====

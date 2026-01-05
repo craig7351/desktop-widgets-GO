@@ -2,6 +2,14 @@
 
 一個精美的桌面小工具，使用 Go + Wails 框架開發，提供天氣資訊、系統監控、待辦事項等功能。
 
+## 📸 程式截圖
+
+<p align="center">
+  <img src="docs/screenshots/screenshot-1.png" width="250" alt="主畫面">
+  <img src="docs/screenshots/screenshot-2.png" width="250" alt="天氣資訊">
+  <img src="docs/screenshots/screenshot-3.png" width="250" alt="系統監控">
+</p>
+
 ## 功能特色
 
 ### 🌤️ 天氣資訊

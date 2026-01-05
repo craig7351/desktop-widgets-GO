@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desktop Widget</title>
+    <link rel="stylesheet" href="/src/style.css" />
+</head>
+
+<body>
+    <div id="app" class="widget-container">
+        <!-- 右鍵選單 -->
+        <div id="context-menu" class="context-menu">
+            <div class="menu-group">
+                <div class="menu-title">切換城市</div>
+                <div class="menu-item" data-city="Taoyuan">桃園</div>
+                <div class="menu-item" data-city="Taipei">台北</div>
+                <div class="menu-item" data-city="Taichung">台中</div>
+                <div class="menu-item" data-city="Tainan">台南</div>
+                <div class="menu-item" data-city="Kaohsiung">高雄</div>
+                <div class="menu-item" data-city="Hsinchu">新竹</div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-group">
+                <div class="menu-title">外觀設定</div>
+                <div class="menu-item submenu-toggle" data-submenu="bg-submenu">背景顏色 ▶</div>
+                <div class="menu-item submenu-toggle" data-submenu="text-submenu">文字顏色 ▶</div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-group">
+                <div class="menu-title">視窗層級</div>
+                <div class="menu-item" id="menu-ontop">📌 最上層 (目前)</div>
+                <div class="menu-item" id="menu-normal">📋 一般層級</div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item" id="menu-quit">結束</div>
+        </div>
+
+        <!-- 背景設定子選單 -->
+        <div id="bg-submenu" class="context-menu submenu">
+            <div class="menu-title">背景顏色</div>
+            <div class="menu-item" id="bg-color-pick">🎨 選擇顏色</div>
+            <div class="menu-divider"></div>
+            <div class="menu-title">背景透明度</div>
+            <div class="menu-item" data-bg-alpha="0.2">20%</div>
+            <div class="menu-item" data-bg-alpha="0.4">40%</div>
+            <div class="menu-item" data-bg-alpha="0.6">60%</div>
+            <div class="menu-item" data-bg-alpha="0.78">78% (預設)</div>
+            <div class="menu-item" data-bg-alpha="1.0">100%</div>
+        </div>
+
+        <!-- 文字設定子選單 -->
+        <div id="text-submenu" class="context-menu submenu">
+            <div class="menu-title">文字顏色</div>
+            <div class="menu-item" id="text-color-pick">🎨 選擇顏色</div>
+            <div class="menu-divider"></div>
+            <div class="menu-title">文字透明度</div>
+            <div class="menu-item" data-text-alpha="0.2">20%</div>
+            <div class="menu-item" data-text-alpha="0.4">40%</div>
+            <div class="menu-item" data-text-alpha="0.6">60%</div>
+            <div class="menu-item" data-text-alpha="0.8">80%</div>
+            <div class="menu-item" data-text-alpha="1.0">100% (預設)</div>
+        </div>
+
+        <!-- 隱藏的顏色選擇器 -->
+        <input type="color" id="bg-color-picker" class="hidden-color-picker" value="#000000" />
+        <input type="color" id="text-color-picker" class="hidden-color-picker" value="#ffffff" />
+
+        <!-- 主佈局：左右雙欄 -->
+        <div class="main-layout">
+            <!-- 左欄：主卡片、預報、待辦 -->
+            <div class="left-column">
+                <!-- 主氣象卡片 -->
+                <div class="card main-card">
+                    <div class="card-header">
+                        <span id="day-label">MONDAY</span>
+                        <button id="refresh-btn" class="refresh-btn" title="重新整理">↻</button>
+                    </div>
+                    <div id="date-label" class="date-label">JANUARY 04, 2026</div>
+                    <div class="temp-row">
+                        <span id="temp-label" class="temp-label">--°C</span>
+                        <span id="weather-icon" class="weather-icon">☀️</span>
+                    </div>
+                    <div id="desc-label" class="desc-label">LOADING...</div>
+                    <div id="location-label" class="location-label">TAOYUAN</div>
+                </div>
+
+                <!-- 三日預報 -->
+                <div class="forecast-area" id="forecast-area">
+                    <!-- 動態填入 -->
+                </div>
+
+                <!-- 待辦事項 -->
+                <div class="card todo-card">
+                    <div class="todo-title">TO-DO LIST</div>
+                    <div id="todo-list" class="todo-list">
+                        <!-- 動態填入 -->
+                    </div>
+                    <input type="text" id="todo-input" class="todo-input" placeholder="Add task..." maxlength="50" />
+                </div>
+            </div>
+
+            <!-- 右欄：詳細資訊與系統監控 -->
+            <div class="right-column">
+                <div class="card detail-card">
+                    <!-- 時鐘/倒數頁面 -->
+                    <div id="clock-page" class="page active">
+                        <div id="time-label" class="big-time">00:00:00</div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Sunrise</span>
+                            <span id="sunrise-val" class="detail-value">--</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Sunset</span>
+                            <span id="sunset-val" class="detail-value">--</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Rain</span>
+                            <span id="rain-val" class="detail-value">--%</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">CPU</span>
+                            <span id="cpu-val" class="detail-value">--%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="cpu-bar" class="progress cpu-bar"></div>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">RAM</span>
+                            <span id="ram-val" class="detail-value">--%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="ram-bar" class="progress ram-bar"></div>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Disk C:</span>
+                            <span id="disk-val" class="detail-value">--%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="disk-bar" class="progress disk-bar"></div>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">DL ⬇️</span>
+                            <span id="net-down-val" class="detail-value">-- KB/s</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="net-down-bar" class="progress net-down-bar"></div>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">UP ⬆️</span>
+                            <span id="net-up-val" class="detail-value">-- KB/s</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="net-up-bar" class="progress net-up-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- 倒數計時頁面 -->
+                    <div id="timer-page" class="page">
+                        <div id="timer-display" class="timer-display">00:00</div>
+                        <div class="timer-inputs">
+                            <input type="number" id="min-input" class="timer-input" placeholder="MM" min="0" max="99" />
+                            <span>:</span>
+                            <input type="number" id="sec-input" class="timer-input" placeholder="SS" min="0" max="59" />
+                        </div>
+                        <div class="timer-buttons">
+                            <button id="start-timer-btn" class="timer-btn">Start</button>
+                            <button id="back-btn" class="timer-btn">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/src/main.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,484 @@
+/* ===== 全域變數 ===== */
+:root {
+    --bg-color: rgba(0, 0, 0, 0.78);
+    --card-bg: rgba(255, 255, 255, 0.15);
+    --text-color: rgba(255, 255, 255, 1);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border-color: rgba(255, 255, 255, 0.2);
+    --accent-green: rgba(0, 230, 118, 0.8);
+    --accent-yellow: rgba(255, 214, 0, 0.8);
+    --accent-silver: rgba(180, 200, 220, 0.8);
+    --accent-cyan: rgba(0, 180, 255, 0.8);
+    --accent-purple: rgba(180, 100, 255, 0.8);
+    --warning-color: rgba(255, 145, 0, 0.9);
+    --danger-color: rgba(255, 23, 68, 0.95);
+}
+
+/* ===== 基礎樣式 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
+    background: transparent;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* ===== Widget 容器 ===== */
+.widget-container {
+    background: var(--bg-color);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    color: var(--text-color);
+    min-height: 100vh;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: default;
+    --wails-draggable: drag;
+}
+
+/* 按鈕和輸入框不可拖曳 */
+button,
+input {
+    --wails-draggable: no-drag;
+}
+
+/* ===== 主佈局 ===== */
+.main-layout {
+    display: flex;
+    gap: 10px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 260px;
+}
+
+.right-column {
+    width: 220px;
+}
+
+/* ===== 卡片樣式 ===== */
+.card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+}
+
+/* ===== 主氣象卡片 ===== */
+.main-card {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header span {
+    font-size: 28px;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+
+.refresh-btn {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.date-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.temp-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.temp-label {
+    font-size: 52px;
+    font-weight: bold;
+}
+
+.weather-icon {
+    font-size: 56px;
+}
+
+.desc-label {
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.location-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ===== 預報區 ===== */
+.forecast-area {
+    display: flex;
+    gap: 5px;
+    height: 100px;
+}
+
+.forecast-card {
+    flex: 1;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.forecast-day {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.forecast-icon {
+    font-size: 22px;
+}
+
+.forecast-temp {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ===== 待辦事項 ===== */
+.todo-card {
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    opacity: 0.8;
+}
+
+.todo-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+    font-size: 11px;
+    min-height: 22px;
+}
+
+.todo-item.done .todo-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.todo-text {
+    cursor: pointer;
+    flex: 1;
+}
+
+.todo-del-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.todo-del-btn:hover {
+    color: #ff5555;
+}
+
+.todo-input {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 11px;
+    padding: 5px 8px;
+    margin-top: auto;
+}
+
+.todo-input::placeholder {
+    color: var(--text-muted);
+}
+
+.todo-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== 詳細資訊卡片 ===== */
+.detail-card {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+.page.active {
+    display: flex;
+}
+
+.big-time {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+    margin: 8px 0 12px;
+    cursor: pointer;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0;
+}
+
+.detail-label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.detail-value {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ===== 進度條 ===== */
+.progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    margin-bottom: 6px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.cpu-bar {
+    background: var(--accent-green);
+}
+
+.ram-bar {
+    background: var(--accent-yellow);
+}
+
+.disk-bar {
+    background: var(--accent-silver);
+}
+
+.net-down-bar {
+    background: var(--accent-cyan);
+}
+
+.net-up-bar {
+    background: var(--accent-purple);
+}
+
+.progress.warning {
+    background: var(--warning-color) !important;
+}
+
+.progress.critical {
+    background: var(--danger-color) !important;
+}
+
+/* ===== 倒數計時頁面 ===== */
+.timer-display {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 40px 0 30px;
+}
+
+.timer-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.timer-input {
+    width: 60px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px;
+}
+
+.timer-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.timer-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.timer-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 14px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.timer-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* ===== 閃爍效果 ===== */
+.flash {
+    animation: flash-bg 0.5s infinite alternate;
+}
+
+@keyframes flash-bg {
+    from {
+        background: var(--bg-color);
+    }
+
+    to {
+        background: rgba(255, 0, 0, 0.8);
+    }
+}
+
+/* ===== 右鍵選單 ===== */
+.context-menu {
+    display: none;
+    position: fixed;
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 0;
+    min-width: 140px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.context-menu.show {
+    display: block;
+}
+
+.menu-group {
+    padding: 4px 0;
+}
+
+.menu-title {
+    padding: 6px 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.menu-item {
+    padding: 8px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 4px 0;
+}
+
+/* ===== 滾動條 ===== */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+
+/* ===== 子選單樣式 ===== */
+.submenu {
+    position: fixed;
+    z-index: 1001;
+}
+
+.submenu-toggle {
+    position: relative;
+}
+
+/* ===== 隱藏的顏色選擇器 ===== */
+.hidden-color-picker {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
